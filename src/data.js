@@ -13,9 +13,9 @@ export class TreeData{
     return newId;
   }
 
-  addTreeToTreeData(lat, long){
+  addTreeToTreeData(lat, long, common, height, circumf, notes, sci, address, status, own, year){
     let treeId = this.assignTreeId();
-    let newTree = new Tree(treeId, lat, long);
+    let newTree = new Tree(treeId, lat, long, common, height, circumf, notes, sci, address, status, own, year);
     this.currentTree = newTree;
     this.treeData.push(newTree);
   }

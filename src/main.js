@@ -25,20 +25,20 @@ import './styles.css';
 //  })
 // }
 
-function addMarker(latitute, longitude, contentLoc, map){
-  const latLng = new google.maps.LatLng(latitute, longitude);
-  const marker = new google.maps.Marker({
-    position: latLng,
-    map: map,
-    draggable: false
-  });
-   let infoWindow = new google.maps.InfoWindow({
-     content: contentLoc
-   });
-   google.maps.event.addListener(marker, "click", function(){
-     infoWindow.open(map, marker);
-   });
-}
+// function addMarker(latitute, longitude, contentLoc, map){
+//   const latLng = new google.maps.LatLng(latitute, longitude);
+//   const marker = new google.maps.Marker({
+//     position: latLng,
+//     map: map,
+//     draggable: false
+//   });
+//    let infoWindow = new google.maps.InfoWindow({
+//      content: contentLoc
+//    });
+//    google.maps.event.addListener(marker, "click", function(){
+//      infoWindow.open(map, marker);
+//    });
+// }
 
 
 $(document).ready(function(){
@@ -52,8 +52,16 @@ $(document).ready(function(){
     for(let i = 0; i < body.features.length; i++){
       let treesLat = body.features[i].geometry.coordinates[0];
       let treesLong = body.features[i].geometry.coordinates[1];
-
-      data.addTreeToTreeData(treesLat, treesLong);
+      let treesCommon = body.features[i].properties.COMMON;
+      let treesHeight = body.features[i].properties.HEIGHT;
+      let treesCircumf = body.features[i].properties.CIRCUMF;
+      let treesNotes = body.features[i].properties.NOTES;
+      let treesSci = body.features[i].properties.SCIENTIFIC;
+      let treesAddress = body.features[i].properties.SITE_ADDRESS;
+      let treesStatus = body.features[i].properties.STATUS;
+      let treesOwn = body.features[i].properties.Ownership;
+      let treesYear = body.features[i].properties.YEAR_Designated;
+      data.addTreeToTreeData(treesLat, treesLong, treesCommon, treesHeight, treesCircumf, treesNotes, treesSci, treesAddress, treesStatus, treesOwn, treesYear);
     }
     let options = { key: process.env.API_KEY };
     console.log(data)
@@ -68,13 +76,8 @@ $(document).ready(function(){
     },
     zoom: 12
   })
-
     map.data.loadGeoJson(
       'https://opendata.arcgis.com/datasets/fd1d618ac3174ad5be730524a4dd778e_26.geojson');
-    // markers.forEach(marker => {
-    //   addMarker(marker.lat, marker.lon, marker.contentString, map);
-    // });
-
 
 }).catch(function (error) {
   console.error(error)
