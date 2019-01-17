@@ -1,6 +1,8 @@
 const loadGoogleMapsApi = require('load-google-maps-api')
 import { TreePromise } from './../src/tree-promise';
 import { MapsPromise } from './../src/tree-promise';
+import { Tree } from './../src/tree';
+import { TreeData } from './../src/data';
 import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,7 +29,6 @@ function addMarker(latitute, longitude, contentLoc, map){
 $(document).ready(function(){
   let options = { key: process.env.API_KEY };
   let map;
-  console.log(process.env)
   loadGoogleMapsApi(options).then(function (googleMaps) {
   map = new googleMaps.Map(document.querySelector('#map'), {
     center: {
@@ -72,7 +73,19 @@ $(document).ready(function(){
 
   treePromise.then(function(response){
     let body = JSON.parse(response);
-    let trees = body.features
+    let data = new TreeData();
+
+    for(let i = 0; i < body.features.length; i++){
+      let treesLat = body.features[i].geometry.coordinates[0];
+      let treesLong = body.features[i].geometry.coordinates[1];
+      
+      data.addTreeToTreeData(treesLat, treesLong);
+
+    }
+    // let tree = new Tree(treesLat, treesLong)
+
+
+    console.log(data)
 
     // console.log(trees);
 
