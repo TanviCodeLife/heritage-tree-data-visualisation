@@ -26,20 +26,20 @@ import './styles.css';
 //  })
 // }
 
-// function addMarker(latitute, longitude, contentLoc, map){
-//   const latLng = new google.maps.LatLng(latitute, longitude);
-//   const marker = new google.maps.Marker({
-//     position: latLng,
-//     map: map,
-//     draggable: false
-//   });
-//    let infoWindow = new google.maps.InfoWindow({
-//      content: contentLoc
-//    });
-//    google.maps.event.addListener(marker, "click", function(){
-//      infoWindow.open(map, marker);
-//    });
-// }
+function addMarker(latitute, longitude, contentLoc, map){
+  const latLng = new google.maps.LatLng(latitute, longitude);
+  const marker = new google.maps.Marker({
+    position: latLng,
+    map: map,
+    draggable: false
+  });
+   let infoWindow = new google.maps.InfoWindow({
+     content: contentLoc
+   });
+   google.maps.event.addListener(marker, "click", function(){
+     infoWindow.open(map, marker);
+   });
+}
 
 
 $(document).ready(function(){
@@ -54,7 +54,12 @@ $(document).ready(function(){
     let body = JSON.parse(response);
     data = new TreeData();
     data.createTreeArray(body.features);
-    console.log(data);
+
+    // console.log(data);
+    let chart = new TreeChart();
+    chart.drawChart();
+
+
     return loadGoogleMapsApi(options);
   }).then(function(googleMaps) {
     map = new googleMaps.Map(document.querySelector('#map'), {
@@ -64,9 +69,14 @@ $(document).ready(function(){
       },
       zoom: 12
     })
-    console.log(data);
-    map.data.loadGeoJson(
-      'https://opendata.arcgis.com/datasets/fd1d618ac3174ad5be730524a4dd778e_26.geojson');
+    // console.log(data);
+    data.treeData.forEach(function(tree){
+      addMarker(tree.lat, tree.long, tree.commonName, map)
+    });
+
+
+    // map.data.loadGeoJson(
+    //   'https://opendata.arcgis.com/datasets/fd1d618ac3174ad5be730524a4dd778e_26.geojson');
     }).catch(function (error) {
       console.error(error)
     })

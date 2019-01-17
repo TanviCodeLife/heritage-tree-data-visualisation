@@ -1,16 +1,17 @@
 import Chart from 'chart.js';
+import $ from 'jquery';
 
 export class TreeChart{
   drawChart(){
     var ctx = $("#myChart");
-    console.log("data :" + data);
+
     var myChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: ["0 - 5", "Blue", "Yellow", "Green", "Purple", "Orange"],
         datasets: [{
           label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
+          data: [12, 7, 3, 5, 2, 3],
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
