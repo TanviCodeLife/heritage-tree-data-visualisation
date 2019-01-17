@@ -19,4 +19,8 @@ export class TreeData{
     this.currentTree = newTree;
     this.treeData.push(newTree);
   }
+
+  displayTreeData(){
+    return this.treeData;
+  }
 }

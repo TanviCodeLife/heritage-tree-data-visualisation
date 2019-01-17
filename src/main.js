@@ -3,6 +3,7 @@ import { TreePromise } from './../src/tree-promise';
 import { MapsPromise } from './../src/tree-promise';
 import { Tree } from './../src/tree';
 import { TreeData } from './../src/data';
+import Chart from 'chart.js';
 import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,13 +46,14 @@ $(document).ready(function(){
   // let coords = treeData()
   let treePromiseObject = new TreePromise();
   let treePromise = treePromiseObject.getTrees();
-  let map;
+  let data = new TreeData();
+
   treePromise.then(function(response){
     let body = JSON.parse(response);
-    let data = new TreeData();
+    data.displayTreeData()
     for(let i = 0; i < body.features.length; i++){
-      let treesLat = body.features[i].geometry.coordinates[0];
-      let treesLong = body.features[i].geometry.coordinates[1];
+      let treesLat = body.features[i].geometry.coordinates[1];
+      let treesLong = body.features[i].geometry.coordinates[0];
       let treesCommon = body.features[i].properties.COMMON;
       let treesHeight = body.features[i].properties.HEIGHT;
       let treesCircumf = body.features[i].properties.CIRCUMF;
@@ -63,12 +65,14 @@ $(document).ready(function(){
       let treesYear = body.features[i].properties.YEAR_Designated;
       data.addTreeToTreeData(treesLat, treesLong, treesCommon, treesHeight, treesCircumf, treesNotes, treesSci, treesAddress, treesStatus, treesOwn, treesYear);
     }
-    let options = { key: process.env.API_KEY };
-    console.log(data)
-    return loadGoogleMapsApi(options)
+    //let treeData = data.displayTreeData();
+    console.log("array: " + data);
+     //data.displayTreeData();
   })
 
-  .then(function (googleMaps) {
+  let options = { key: process.env.API_KEY };
+  let map;
+  loadGoogleMapsApi(options).then(function (googleMaps) {
   map = new googleMaps.Map(document.querySelector('#map'), {
     center: {
       lat: 45.520840,
@@ -83,6 +87,42 @@ $(document).ready(function(){
   console.error(error)
 })
 
-
-
+var ctx = $("#myChart");
+console.log("ctx :" + ctx);
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        datasets: [{
+            label: '# of Votes',
+            data: [12, 19, 3, 5, 2, 3],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
 })
