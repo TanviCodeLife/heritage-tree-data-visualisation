@@ -9,22 +9,6 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 
-// function treeData() {
-//  let treePromiseObject = new TreePromise();
-//  let treePromise = treePromiseObject.getTrees();
-//
-//  treePromise.then(function(response){
-//    let body = JSON.parse(response);
-//    let data = new TreeData();
-//    for(let i = 0; i < body.features.length; i++){
-//      let treesLat = body.features[i].geometry.coordinates[0];
-//      let treesLong = body.features[i].geometry.coordinates[1];
-//
-//      data.addTreeToTreeData(treesLat, treesLong);
-//    }
-//
-//  })
-// }
 
 function addMarker(latitute, longitude, contentLoc, map){
   const latLng = new google.maps.LatLng(latitute, longitude);
@@ -34,7 +18,7 @@ function addMarker(latitute, longitude, contentLoc, map){
     draggable: false
   });
    let infoWindow = new google.maps.InfoWindow({
-     content: "<p><strong>Common Name:</strong> " + contentLoc + "</p>"
+     content: "<p><strong>Common Name:</strong> " + contentLoc.commonName + "</p>" + "<p><strong>Height:</strong> " + contentLoc.height +  "ft</p>"+ "<p><strong>Circumference:</strong> " + contentLoc.circumf + "in</p>" + "<p><strong>Year Designated:</strong> " + contentLoc.yearDesignated + "</p>"
    });
    google.maps.event.addListener(marker, "click", function(){
      infoWindow.open(map, marker);
@@ -56,9 +40,6 @@ $(document).ready(function(){
     data.createTreeArray(body.features);
     drawChart(data.treeData);
     drawDoughnutChart(doughnutData(data.treeData));
-    // let chart = new TreeChart();
-    // chart.drawChart(data.treeData);
-
     return loadGoogleMapsApi(options);
   }).then(function(googleMaps) {
     map = new googleMaps.Map(document.querySelector('#map'), {
@@ -68,9 +49,8 @@ $(document).ready(function(){
       },
       zoom: 12
     })
-    // console.log(data);
     data.treeData.forEach(function(tree){
-      addMarker(tree.lat, tree.long, tree.commonName, map)
+      addMarker(tree.lat, tree.long, tree, map)
     });
     }).catch(function (error) {
       console.error(error)

@@ -5,6 +5,7 @@ export function drawChart(treeData){
     const ctx = document.getElementById('myChart').getContext('2d');
 
     let dataArray  = [0,0,0,0,0,0,0];
+    let dataArrayCoords = [];
     for(let i = 0; i < treeData.length; i++){
       if (treeData[i].circumf >= 0 && treeData[i].circumf <= 5){
         dataArray[0] ++;
