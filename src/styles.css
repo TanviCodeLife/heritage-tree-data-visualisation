@@ -1,4 +1,32 @@
 #map{
-  height: 400px;
+  height: 800px;
   width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 3%;
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: row;
+  padding-top: 3%;
+  width: 100%;
+  justify-content: center;
+}
+
+.column-left {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.column-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
 }

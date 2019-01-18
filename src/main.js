@@ -3,7 +3,7 @@ import { TreePromise } from './../src/tree-promise';
 import { MapsPromise } from './../src/tree-promise';
 import { Tree } from './../src/tree';
 import { TreeData } from './../src/data';
-import { TreeChart } from './../src/chartDraw';
+import { drawChart, drawDoughnutChart, doughnutData } from './../src/chartDraw';
 import $ from 'jquery';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -34,7 +34,7 @@ function addMarker(latitute, longitude, contentLoc, map){
     draggable: false
   });
    let infoWindow = new google.maps.InfoWindow({
-     content: contentLoc
+     content: "<p><strong>Common Name:</strong> " + contentLoc + "</p>"
    });
    google.maps.event.addListener(marker, "click", function(){
      infoWindow.open(map, marker);
@@ -54,11 +54,10 @@ $(document).ready(function(){
     let body = JSON.parse(response);
     data = new TreeData();
     data.createTreeArray(body.features);
-
-    // console.log(data);
-    let chart = new TreeChart();
-    chart.drawChart();
-
+    drawChart(data.treeData);
+    drawDoughnutChart(doughnutData(data.treeData));
+    // let chart = new TreeChart();
+    // chart.drawChart(data.treeData);
 
     return loadGoogleMapsApi(options);
   }).then(function(googleMaps) {
@@ -73,10 +72,6 @@ $(document).ready(function(){
     data.treeData.forEach(function(tree){
       addMarker(tree.lat, tree.long, tree.commonName, map)
     });
-
-
-    // map.data.loadGeoJson(
-    //   'https://opendata.arcgis.com/datasets/fd1d618ac3174ad5be730524a4dd778e_26.geojson');
     }).catch(function (error) {
       console.error(error)
     })

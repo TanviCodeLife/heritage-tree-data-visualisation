@@ -19,6 +19,7 @@ export class TreeData{
     let newTree = new Tree(treeId, lat, long, common, height, circumf, notes, sci, address, status, own, year);
     this.currentTree = newTree;
     this.treeData.push(newTree);
+
   }
 
   createTreeArray(feature){
