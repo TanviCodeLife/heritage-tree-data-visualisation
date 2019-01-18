@@ -18,7 +18,7 @@ function addMarker(latitute, longitude, contentLoc, map){
     draggable: false
   });
    let infoWindow = new google.maps.InfoWindow({
-     content: "<p><strong>Common Name:</strong> " + contentLoc.commonName + "</p>" + "<p><strong>Height:</strong> " + contentLoc.height +  "ft</p>"+ "<p><strong>Circumference:</strong> " + contentLoc.circumf + "in</p>" + "<p><strong>Year Designated:</strong> " + contentLoc.yearDesignated + "</p>"
+     content: "<p><strong>Common Name:</strong> " + contentLoc.commonName + "</p>" + "<p><strong>Height:</strong> " + contentLoc.height +  "ft</p>"+ "<p><strong>Circumference:</strong> " + contentLoc.circumf + "ft</p>" + "<p><strong>Year Designated:</strong> " + contentLoc.yearDesignated + "</p>"
    });
    google.maps.event.addListener(marker, "click", function(){
      infoWindow.open(map, marker);
